@@ -3,6 +3,9 @@ import z from 'zod'
 export const envSchema = z.object({
 	DATABASE_URL: z.coerce.string(),
 	NODE_ENV: z.enum(['dev', 'test', 'production', 'local']).default('dev'),
+	ITEMS_PER_PAGE: z.coerce.number(),
+	CURSOR_LIMIT: z.coerce.number().default(20),
+	OFFSET_LIMIT: z.coerce.number().default(20),
 	JWT_PRIVATE_KEY: z.string(),
 	JWT_PUBLIC_KEY: z.string(),
 	PORT: z.coerce.number().default(3000),
