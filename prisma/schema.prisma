@@ -1,0 +1,84 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  CLIENT
+}
+
+model User {
+  id           String   @id @default(uuid(7))
+  email        String   @unique
+  passwordHash String
+  role         Role
+  avatarUrl    String?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @default(now()) @updatedAt
+  client       Client?
+
+  @@map("users")
+}
+
+model Client {
+  id            String    @id @default(uuid(7))
+  name          String
+  phoneNumber   String?
+  monthlyIncome Decimal?
+  incomes       Income[]
+  expenses      Expense[]
+  goals         Goal[]
+
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String @unique
+
+  @@map("clients")
+}
+
+model Income {
+  id          String   @id @default(uuid(7))
+  amount      Decimal
+  date        DateTime @default(now())
+  description String?
+  category    String?
+  updatedAt   DateTime @default(now()) @updatedAt
+
+  client   Client @relation(fields: [clientId], references: [id], onDelete: Cascade)
+  clientId String
+
+  @@map("incomes")
+}
+
+model Expense {
+  id          String   @id @default(uuid(7))
+  amount      Decimal
+  date        DateTime @default(now())
+  description String?
+  category    String?
+  updatedAt   DateTime @default(now()) @updatedAt
+
+  client   Client @relation(fields: [clientId], references: [id], onDelete: Cascade)
+  clientId String
+
+  @@map("expenses")
+}
+
+model Goal {
+  id          String    @id @default(uuid(7))
+  target      Decimal
+  saved       Decimal
+  startedAt   DateTime  @default(now())
+  endedAt     DateTime?
+  description String?
+  category    String?
+  updatedAt   DateTime  @default(now()) @updatedAt
+
+  client   Client @relation(fields: [clientId], references: [id], onDelete: Cascade)
+  clientId String
+
+  @@map("goals")
+}
