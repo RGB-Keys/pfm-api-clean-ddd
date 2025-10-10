@@ -1,4 +1,4 @@
-import { ValidationError } from '@/api/core/errors/domain/validation-error.domain-error'
+import { ValidationError } from '@/shared'
 
 type ValidationCheck = () => string | null
 

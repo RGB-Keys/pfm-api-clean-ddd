@@ -1,18 +1,18 @@
-import { Income } from '@/api/domain/entities/income.entity'
-import { Either, fail, success } from '@/api/core/errors/either/either'
-import { UniqueEntityId } from '@/api/core/entities/value-objects/unique-entity-id'
-import { Money } from '@/api/domain/entities/value-objects/money.value-object'
-import { Category } from '@/api/domain/entities/value-objects/category.value-object'
-import { ClientRepository } from '../../repositories/client.repository'
 import { ClientNotFoundError } from '@/api/core/errors/domain/client/client-not-found-error'
-import { EventBus } from '@/api/core/events/event-bus'
+import { Income } from '@/api/domain/entities/income.entity'
+import { Category } from '@/api/domain/entities/value-objects/category.value-object'
+import { Money } from '@/api/domain/entities/value-objects/money.value-object'
+import { UniqueEntityId } from '@/shared'
+import { Either, fail, success } from '@/shared/core/errors/either/either'
+import { EventBus } from '@/shared/core/events/event-bus'
+import { ClientRepository } from '../../repositories/client.repository'
 
 interface CreateIncomeUseCaseRequest {
 	clientId: string
 	amount: number
 	date: Date
 	description?: string
-	category: string
+	category?: string
 }
 
 type CreateIncomeUseCaseResponse = Either<
@@ -42,7 +42,7 @@ export class CreateIncomeUseCase {
 		const income = Income.create({
 			clientId: new UniqueEntityId(clientId),
 			amount: new Money(amount),
-			category: new Category(category),
+			category: category ? new Category(category) : undefined,
 			date,
 			description,
 		})

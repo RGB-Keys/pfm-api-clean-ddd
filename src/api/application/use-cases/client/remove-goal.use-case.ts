@@ -1,9 +1,8 @@
-import { UniqueEntityId } from '@/api/core/entities/value-objects/unique-entity-id'
 import { ClientNotFoundError } from '@/api/core/errors/domain/client/client-not-found-error'
 import { GoalNotFoundError } from '@/api/core/errors/domain/goal/goal-not-found-error'
-import { NotAllowedError } from '@/api/core/errors/domain/not-allowed-error'
-import { Either, fail, success } from '@/api/core/errors/either/either'
-import { EventBus } from '@/api/core/events/event-bus'
+import { NotAllowedError, UniqueEntityId } from '@/shared'
+import { Either, fail, success } from '@/shared/core/errors/either/either'
+import { EventBus } from '@/shared/core/events/event-bus'
 import { ClientRepository } from '../../repositories/client.repository'
 import { GoalRepository } from '../../repositories/goal.repository'
 

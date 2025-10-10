@@ -1,9 +1,9 @@
-import { OutputCollectionDTO } from '@/api/core/dtos/output-collection-dto'
-import { UniqueEntityId } from '@/api/core/entities/value-objects/unique-entity-id'
-import { EventBus } from '@/api/core/events/event-bus'
 import { Client } from '@/api/domain/entities/client.entity'
 import { Goal } from '@/api/domain/entities/goal.entity'
 import { Money } from '@/api/domain/entities/value-objects/money.value-object'
+import { UniqueEntityId } from '@/shared'
+import { OutputCollectionDTO } from '@/shared/core/dtos/output-collection-dto'
+import { EventBus } from '@/shared/core/events/event-bus'
 import { GoalSummaryDTO } from '../../dtos/goal.dto'
 import { ClientRepository } from '../../repositories/client.repository'
 import { GoalRepository } from '../../repositories/goal.repository'
@@ -205,7 +205,6 @@ describe('List Goal Use Case', async () => {
 			email: 'teste@gmail.com',
 			name: 'testualdo',
 			passwordHash: 'some_password',
-			monthlyIncome: new Money(5000),
 		})
 
 		await clientRepository.create(client)

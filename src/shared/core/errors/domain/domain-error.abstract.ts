@@ -1,4 +1,4 @@
-import { HttpStatusCode } from '../../enums/http-status-code'
+import { HttpStatusCode } from '../../../../shared/core/enums/http-status-code'
 
 export abstract class DomainError extends Error {
 	readonly message: string

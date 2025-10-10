@@ -1,7 +1,6 @@
-import { AggregateRoot } from '@/api/core/entities/aggregate-root'
-import { UniqueEntityId } from '@/api/core/entities/value-objects/unique-entity-id'
-import { validateProps } from '@/api/core/utils/validateProps.utils'
-import { validateString } from '@/api/core/utils/validateString.utils'
+import { validateProps } from '@/shared/core/utils/validateProps.utils'
+import { validateString } from '@/shared/core/utils/validateString.utils'
+import { AggregateRoot, UniqueEntityId } from '@shared'
 import { UserRole } from '../enums/user/role'
 
 export interface UserProps {
@@ -35,7 +34,7 @@ export class User extends AggregateRoot {
 		this.updatedAt = input.updatedAt
 	}
 
-	static restoure(input: UserProps, id?: UniqueEntityId): User {
+	protected restore(input: UserProps, id?: UniqueEntityId): User {
 		return new User(input, id)
 	}
 

@@ -1,4 +1,4 @@
-import { WatchedList } from '@/api/core/entities/watched-list'
+import { WatchedList } from '@shared'
 import { Income } from '../income.entity'
 
 export class IncomeList extends WatchedList<Income> {

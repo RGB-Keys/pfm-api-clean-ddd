@@ -1,9 +1,8 @@
-import { UniqueEntityId } from '@/api/core/entities/value-objects/unique-entity-id'
 import { ClientNotFoundError } from '@/api/core/errors/domain/client/client-not-found-error'
 import { IncomeNotFoundError } from '@/api/core/errors/domain/income/income-not-found-error'
-import { NotAllowedError } from '@/api/core/errors/domain/not-allowed-error'
-import { Either, fail, success } from '@/api/core/errors/either/either'
-import { EventBus } from '@/api/core/events/event-bus'
+import { NotAllowedError, UniqueEntityId } from '@/shared'
+import { Either, fail, success } from '@/shared/core/errors/either/either'
+import { EventBus } from '@/shared/core/events/event-bus'
 import { ClientRepository } from '../../repositories/client.repository'
 import { IncomeRepository } from '../../repositories/income.repository'
 

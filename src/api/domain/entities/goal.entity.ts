@@ -1,7 +1,6 @@
-import { Entity } from '@/api/core/entities/entity'
-import { UniqueEntityId } from '@/api/core/entities/value-objects/unique-entity-id'
-import { Optional } from '@/api/core/types/optional'
-import { validateProps } from '@/api/core/utils/validateProps.utils'
+import { Optional } from '@/shared/core/types/optional'
+import { validateProps } from '@/shared/core/utils/validateProps.utils'
+import { Entity, UniqueEntityId } from '@shared'
 import { Money } from './value-objects/money.value-object'
 
 export interface GoalProps {
@@ -26,10 +25,10 @@ export class Goal extends Entity {
 
 		this.clientId = input.clientId
 		this.target = input.target
-		this.endedAt = input.endedAt ?? null
-		this.saved = input.saved ?? new Money(0)
-		this.startedAt = input.startedAt ?? new Date()
-		this.updatedAt = input.updatedAt ?? null
+		this.endedAt = input.endedAt
+		this.saved = input.saved
+		this.startedAt = input.startedAt
+		this.updatedAt = input.updatedAt
 
 		this.validate()
 	}
@@ -53,11 +52,8 @@ export class Goal extends Entity {
 		)
 	}
 
-	static restore(
-		input: Optional<GoalProps, 'startedAt' | 'endedAt'>,
-		id?: UniqueEntityId,
-	): Goal {
-		return new Goal({ ...input, startedAt: input.startedAt ?? new Date() }, id)
+	static restore(input: GoalProps, id?: UniqueEntityId): Goal {
+		return new Goal(input, id)
 	}
 
 	private validate() {

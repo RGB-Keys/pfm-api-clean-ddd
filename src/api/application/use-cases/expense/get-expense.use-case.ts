@@ -1,8 +1,8 @@
 import { ClientNotFoundError } from '@/api/core/errors/domain/client/client-not-found-error'
 import { ExpenseNotFoundError } from '@/api/core/errors/domain/expense/expense-not-found-error'
-import { NotAllowedError } from '@/api/core/errors/domain/not-allowed-error'
-import { Either, fail, success } from '@/api/core/errors/either/either'
 import { Expense } from '@/api/domain/entities/expense.entity'
+import { NotAllowedError } from '@/shared'
+import { Either, fail, success } from '@/shared/core/errors/either/either'
 import { ClientRepository } from '../../repositories/client.repository'
 import { ExpenseRepository } from '../../repositories/expense.repository'
 

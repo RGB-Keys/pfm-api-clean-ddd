@@ -1,8 +1,8 @@
 import { HashGenerator } from '@/api/application/cryptography/hash-generator'
 import { ClientRepository } from '@/api/application/repositories/client.repository'
 import { ClientAlreadyExistsError } from '@/api/core/errors/domain/client/client-already-exists-error'
-import { Either, fail, success } from '@/api/core/errors/either/either'
 import { Client } from '@/api/domain/entities/client.entity'
+import { Either, fail, success } from '@/shared/core/errors/either/either'
 
 interface RegisterClientUseCaseRequest {
 	name: string

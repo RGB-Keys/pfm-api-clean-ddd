@@ -1,4 +1,4 @@
-import { HttpStatusCode } from '../../enums/http-status-code'
+import { HttpStatusCode } from '../../../../shared/core/enums/http-status-code'
 import { DomainError } from './domain-error.abstract'
 
 export class ValidationError extends DomainError {
