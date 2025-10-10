@@ -1,4 +1,4 @@
-import { DomainError } from '@/api/core/errors/domain/domain-error.abstract'
+import { DomainError } from '@/shared'
 import {
 	ArgumentsHost,
 	Catch,
