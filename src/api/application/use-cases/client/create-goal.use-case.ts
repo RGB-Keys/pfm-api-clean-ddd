@@ -1,10 +1,10 @@
-import { Goal } from '@/api/domain/entities/goal.entity'
-import { Either, fail, success } from '@/api/core/errors/either/either'
-import { UniqueEntityId } from '@/api/core/entities/value-objects/unique-entity-id'
-import { Money } from '@/api/domain/entities/value-objects/money.value-object'
 import { ClientNotFoundError } from '@/api/core/errors/domain/client/client-not-found-error'
+import { Goal } from '@/api/domain/entities/goal.entity'
+import { Money } from '@/api/domain/entities/value-objects/money.value-object'
+import { UniqueEntityId } from '@/shared'
+import { Either, fail, success } from '@/shared/core/errors/either/either'
+import { EventBus } from '@/shared/core/events/event-bus'
 import { ClientRepository } from '../../repositories/client.repository'
-import { EventBus } from '@/api/core/events/event-bus'
 
 interface CreateGoalUseCaseRequest {
 	clientId: string

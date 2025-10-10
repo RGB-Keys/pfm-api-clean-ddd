@@ -42,7 +42,7 @@ describe('Set Monthly Income Use Case', () => {
 		if (result.isSuccess()) {
 			const { clientId, monthlyIncome } = result.value
 			expect(clientId).toEqual(request.clientId)
-			expect(monthlyIncome).toEqual('R$ 1.000,00')
+			expect(monthlyIncome).toEqual(request.amount)
 		}
 	})
 

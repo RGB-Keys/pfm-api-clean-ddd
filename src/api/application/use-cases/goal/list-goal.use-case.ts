@@ -1,6 +1,6 @@
-import { OutputCollectionDTO } from '@/api/core/dtos/output-collection-dto'
-import { Either, success } from '@/api/core/errors/either/either'
-import { SearchParams } from '@/api/core/search/search-params'
+import { OutputCollectionDTO } from '@/shared/core/dtos/output-collection-dto'
+import { Either, success } from '@/shared/core/errors/either/either'
+import { SearchParams } from '@shared'
 import { GoalSummaryDTO } from '../../dtos/goal.dto'
 import { GoalRepository } from '../../repositories/goal.repository'
 

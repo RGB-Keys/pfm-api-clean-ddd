@@ -1,5 +1,5 @@
-import { DomainEvent } from '@/api/core/events/domain-event'
-import { UniqueEntityId } from '@/api/core/entities/value-objects/unique-entity-id'
+import { UniqueEntityId } from '@/shared'
+import { DomainEvent } from '@/shared/core/events/domain-event'
 
 export class GoalRemovedEvent extends DomainEvent {
 	public occurredAt: Date

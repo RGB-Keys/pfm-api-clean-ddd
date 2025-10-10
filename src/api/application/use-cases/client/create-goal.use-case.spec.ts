@@ -1,9 +1,9 @@
-import { UniqueEntityId } from '@/api/core/entities/value-objects/unique-entity-id'
 import { ClientNotFoundError } from '@/api/core/errors/domain/client/client-not-found-error'
-import { EventBus } from '@/api/core/events/event-bus'
 import { Client } from '@/api/domain/entities/client.entity'
 import { Goal } from '@/api/domain/entities/goal.entity'
 import { Money } from '@/api/domain/entities/value-objects/money.value-object'
+import { UniqueEntityId } from '@/shared'
+import { EventBus } from '@/shared/core/events/event-bus'
 import { ClientRepository } from '../../repositories/client.repository'
 import { CreateGoalUseCase } from './create-goal.use-case'
 

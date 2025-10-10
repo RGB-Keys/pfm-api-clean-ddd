@@ -1,8 +1,8 @@
 import { ClientNotFoundError } from '@/api/core/errors/domain/client/client-not-found-error'
 import { GoalNotFoundError } from '@/api/core/errors/domain/goal/goal-not-found-error'
-import { NotAllowedError } from '@/api/core/errors/domain/not-allowed-error'
-import { Either, fail, success } from '@/api/core/errors/either/either'
 import { Goal } from '@/api/domain/entities/goal.entity'
+import { Either, fail, success } from '@/shared/core/errors/either/either'
+import { NotAllowedError } from '@shared'
 import { ClientRepository } from '../../repositories/client.repository'
 import { GoalRepository } from '../../repositories/goal.repository'
 

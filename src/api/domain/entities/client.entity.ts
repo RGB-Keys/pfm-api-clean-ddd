@@ -1,8 +1,7 @@
-import { UniqueEntityId } from '@/api/core/entities/value-objects/unique-entity-id'
-import { ValidationError } from '@/api/core/errors/domain/validation-error.domain-error'
-import { Optional } from '@/api/core/types/optional'
-import { validateProps } from '@/api/core/utils/validateProps.utils'
-import { validateString } from '@/api/core/utils/validateString.utils'
+import { Optional } from '@/shared/core/types/optional'
+import { validateProps } from '@/shared/core/utils/validateProps.utils'
+import { validateString } from '@/shared/core/utils/validateString.utils'
+import { UniqueEntityId, ValidationError } from '@shared'
 import { UserRole } from '../enums/user/role'
 import { BalanceUpdatedEvent } from '../events/client/balanceUpdated.event'
 import { ExpenseAddedEvent } from '../events/expense/expense-added.event'
@@ -25,7 +24,7 @@ import { IncomeList } from './watched-lists/income.watched-list'
 export interface ClientProps extends UserProps {
 	name: Client['name']
 	phoneNumber?: Client['phoneNumber']
-	monthlyIncome?: Client['monthlyIncome']
+	monthlyIncome: Client['monthlyIncome']
 	incomes: Client['incomes']
 	expenses: Client['expenses']
 	goals: Client['goals']
@@ -34,18 +33,12 @@ export interface ClientProps extends UserProps {
 export class Client extends User {
 	public name: string
 	public phoneNumber?: string | null
-	public monthlyIncome?: Money | null
+	public monthlyIncome: Money
 	public incomes: IncomeList
 	public expenses: ExpenseList
 	public goals: GoalList
 
-	private constructor(
-		input: Omit<
-			ClientProps,
-			'monthlyIncome' | 'incomes' | 'expenses' | 'goals'
-		>,
-		id?: UniqueEntityId,
-	) {
+	private constructor(input: ClientProps, id?: UniqueEntityId) {
 		super(
 			{
 				email: input.email,
@@ -56,11 +49,11 @@ export class Client extends User {
 			id,
 		)
 		this.name = input.name
-		this.phoneNumber = input.phoneNumber ?? null
-		this.monthlyIncome = new Money(0)
-		this.incomes = new IncomeList([])
-		this.expenses = new ExpenseList([])
-		this.goals = new GoalList([])
+		this.phoneNumber = input.phoneNumber
+		this.monthlyIncome = input.monthlyIncome
+		this.incomes = input.incomes
+		this.expenses = input.expenses
+		this.goals = input.goals
 
 		this.validate()
 	}
@@ -91,7 +84,7 @@ export class Client extends User {
 	}
 
 	public setMonthlyIncome(amount: Money) {
-		if (!amount || amount.value.amountInCents < 0) {
+		if (!amount || amount.value.parsedAmount < 0) {
 			throw new ValidationError('Monthly income cannot be negative')
 		}
 
@@ -117,6 +110,8 @@ export class Client extends User {
 			),
 		)
 
+		//TODO: Mudar para um job
+
 		this.addDomainEvent(
 			new BalanceUpdatedEvent(
 				new UniqueEntityId(this.id.toString()),
@@ -135,6 +130,8 @@ export class Client extends User {
 				new UniqueEntityId(this.id.toString()),
 			),
 		)
+
+		//TODO: Mudar para um job
 
 		this.addDomainEvent(
 			new BalanceUpdatedEvent(
@@ -168,6 +165,8 @@ export class Client extends User {
 			),
 		)
 
+		//TODO: Mudar para um job
+
 		this.addDomainEvent(
 			new BalanceUpdatedEvent(
 				new UniqueEntityId(this.id.toString()),
@@ -186,6 +185,8 @@ export class Client extends User {
 				new UniqueEntityId(this.id.toString()),
 			),
 		)
+
+		//TODO: Mudar para um job
 
 		this.addDomainEvent(
 			new BalanceUpdatedEvent(
@@ -233,6 +234,8 @@ export class Client extends User {
 			),
 		)
 
+		//TODO: Mudar para um job
+
 		this.addDomainEvent(
 			new BalanceUpdatedEvent(
 				new UniqueEntityId(this.id.toString()),
@@ -251,6 +254,8 @@ export class Client extends User {
 		goal.saved = updated
 		goal.updatedAt = new Date()
 		this.touch()
+
+		//TODO: Mudar para um job
 
 		this.addDomainEvent(
 			new GoalContributedEvent(
@@ -300,6 +305,10 @@ export class Client extends User {
 			{
 				...args,
 				role: UserRole.CLIENT,
+				monthlyIncome: new Money(0),
+				incomes: new IncomeList([]),
+				expenses: new ExpenseList([]),
+				goals: new GoalList([]),
 				createdAt: new Date(),
 			},
 			id,
@@ -323,7 +332,7 @@ export class Client extends User {
 
 type ClientCreateArgs = Omit<
 	ClientProps,
-	'incomes' | 'goals' | 'expenses' | 'role' | 'createdAt'
+	'monthlyIncome' | 'incomes' | 'goals' | 'expenses' | 'role' | 'createdAt'
 >
 
 type ClientUpdateArgs = Optional<

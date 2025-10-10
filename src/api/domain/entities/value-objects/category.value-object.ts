@@ -1,5 +1,4 @@
-import { ValueObject } from '@/api/core/entities/value-object'
-import { ValidationError } from '@/api/core/errors/domain/validation-error.domain-error'
+import { ValidationError, ValueObject } from '@shared'
 
 export class Category extends ValueObject<{ category: string }> {
 	constructor(name: string) {

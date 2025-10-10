@@ -1,12 +1,11 @@
-import { UniqueEntityId } from '@/api/core/entities/value-objects/unique-entity-id'
 import { ClientNotFoundError } from '@/api/core/errors/domain/client/client-not-found-error'
 import { IncomeNotFoundError } from '@/api/core/errors/domain/income/income-not-found-error'
-import { NotAllowedError } from '@/api/core/errors/domain/not-allowed-error'
-import { EventBus } from '@/api/core/events/event-bus'
 import { Client } from '@/api/domain/entities/client.entity'
 import { Income } from '@/api/domain/entities/income.entity'
 import { Category } from '@/api/domain/entities/value-objects/category.value-object'
 import { Money } from '@/api/domain/entities/value-objects/money.value-object'
+import { NotAllowedError, UniqueEntityId } from '@/shared'
+import { EventBus } from '@/shared/core/events/event-bus'
 import { ClientRepository } from '../../repositories/client.repository'
 import { IncomeRepository } from '../../repositories/income.repository'
 import { RemoveIncomeUseCase } from './remove-income.use-case'
@@ -109,7 +108,6 @@ describe('Remove Income Use Case', async () => {
 			email: 'teste@gmail.com',
 			name: 'testualdo',
 			passwordHash: 'some_password',
-			monthlyIncome: new Money(5000),
 		})
 
 		const otherClient = Client.create({

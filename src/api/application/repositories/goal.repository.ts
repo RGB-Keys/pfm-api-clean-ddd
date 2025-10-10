@@ -1,6 +1,6 @@
-import { OutputCollectionDTO } from '@/api/core/dtos/output-collection-dto'
-import { SearchParams } from '@/api/core/search/search-params'
 import { Goal } from '@/api/domain/entities/goal.entity'
+import { OutputCollectionDTO } from '@/shared/core/dtos/output-collection-dto'
+import { SearchParams } from '@shared'
 import { GoalSummaryDTO } from '../dtos/goal.dto'
 
 export abstract class GoalRepository {

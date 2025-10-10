@@ -1,5 +1,5 @@
-import { DomainEvents } from '@/api/core/events/domain-events'
-import { EventHandler } from '@/api/core/events/event-handler'
+import { DomainEvents } from '@/shared/core/events/domain-events'
+import { EventHandler } from '@/shared/core/events/event-handler'
 import { GoalContributedEvent } from '../../../domain/events/goal/goal-contribute.event'
 
 export class NotifyGoalHandler implements EventHandler {

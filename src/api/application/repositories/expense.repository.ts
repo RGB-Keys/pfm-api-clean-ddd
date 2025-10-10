@@ -1,6 +1,6 @@
-import { OutputCollectionDTO } from '@/api/core/dtos/output-collection-dto'
-import { SearchParams } from '@/api/core/search/search-params'
 import { Expense } from '@/api/domain/entities/expense.entity'
+import { OutputCollectionDTO } from '@/shared/core/dtos/output-collection-dto'
+import { SearchParams } from '@shared'
 import { ExpenseSummaryDTO } from '../dtos/expense.dto'
 
 export abstract class ExpenseRepository {

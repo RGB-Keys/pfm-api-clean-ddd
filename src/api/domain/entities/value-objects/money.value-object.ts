@@ -1,10 +1,9 @@
-import { ValueObject } from '@/api/core/entities/value-object'
-import { ValidationError } from '@/api/core/errors/domain/validation-error.domain-error'
+import { ValidationError, ValueObject } from '@shared'
 
 /**
  * Value Object que representa a renda mensal de um usuário.
  */
-export class Money extends ValueObject<{ amountInCents: number }> {
+export class Money extends ValueObject<{ parsedAmount: number }> {
 	constructor(amount: number | string) {
 		// Converte string com vírgula ou número para float
 		const parsedAmount =
@@ -14,10 +13,7 @@ export class Money extends ValueObject<{ amountInCents: number }> {
 			throw new ValidationError('Invalid money value.')
 		}
 
-		// Converte para centavos e arredonda para inteiro
-		const amountInCents = Math.round(parsedAmount * 100)
-
-		super({ amountInCents })
+		super({ parsedAmount })
 		this.validate()
 	}
 
@@ -29,7 +25,7 @@ export class Money extends ValueObject<{ amountInCents: number }> {
 
 	/** Retorna o valor em reais */
 	public get amount(): number {
-		return this.props.amountInCents / 100
+		return this.props.parsedAmount
 	}
 
 	/** Retorna o valor formatado em moeda brasileira */
