@@ -22,7 +22,10 @@
 		"strictBindCallApply": false,
 		"noFallthroughCasesInSwitch": false,
 		"paths": {
-			"@/*": ["./src/*"]
+			"@/*": ["./src/*"],
+			"@shared": ["./src/shared/"],
+			"@shared/*": ["./src/shared/*"],
+			"@swagger/*": ["./src/api/infra/http/swagger/*"]
 		},
 		"types": ["vitest/globals"]
 	}
