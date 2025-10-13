@@ -6,7 +6,7 @@ import { GoalSummaryDTO } from '../dtos/goal.dto'
 export abstract class GoalRepository {
 	abstract findUnique(params: FindUniqueGoalParams): Promise<Goal | null>
 	abstract listSummary(
-		params?: SearchParams<GoalSearchableFields>,
+		params: SearchParams<GoalSearchableFields>,
 	): Promise<OutputCollectionDTO<GoalSummaryDTO>>
 }
 
@@ -16,8 +16,7 @@ export interface FindUniqueGoalParams {
 
 export interface GoalSearchableFields {
 	clientId: string
-	target: number
+	goalId: string
 	startedAt: Date
-	endedAt?: Date | null
-	saved: number
+	endedAt: Date
 }

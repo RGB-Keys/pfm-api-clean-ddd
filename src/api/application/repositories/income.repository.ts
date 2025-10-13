@@ -16,8 +16,7 @@ export interface FindUniqueIncomeParams {
 
 export interface IncomeSearchableFields {
 	clientId: string
-	amount: number
+	incomeId: string
 	date: Date
-	description?: string | null
-	category?: string | null
+	category: string
 }
