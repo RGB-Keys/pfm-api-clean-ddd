@@ -5,7 +5,12 @@ import {
 	IncomeSearchableFields,
 } from '@/api/application/repositories/income.repository'
 import { Income } from '@/api/domain/entities/income.entity'
-import { OutputCollectionDTO, PrismaService, SearchParams } from '@/shared'
+import {
+	OutputCollectionDTO,
+	PrismaExtendedClient,
+	PrismaService,
+	SearchParams,
+} from '@/shared'
 import { Injectable } from '@nestjs/common'
 import {
 	IncomeSummarytoDTO,
@@ -14,12 +19,16 @@ import {
 
 @Injectable()
 export class PrismaIncomeRepository implements IncomeRepository {
-	constructor(private prisma: PrismaService) {}
+	private readonly db: PrismaExtendedClient
+
+	constructor(private prisma: PrismaService) {
+		this.db = prisma.getClient()
+	}
 
 	async findUnique({
 		incomeId,
 	}: FindUniqueIncomeParams): Promise<Income | null> {
-		const income = await this.prisma.income.findUnique({
+		const income = await this.db.income.findUnique({
 			where: { id: incomeId },
 		})
 
@@ -29,16 +38,21 @@ export class PrismaIncomeRepository implements IncomeRepository {
 	}
 
 	async listSummary(
-		params?: SearchParams<IncomeSearchableFields>,
+		params: SearchParams<IncomeSearchableFields>,
 	): Promise<OutputCollectionDTO<IncomeSummaryDTO>> {
-		const [data, meta] = await this.prisma.extendedClient.income.paginate({
-			where: params?.filters,
-			orderBy: params?.pagination.sortFild && {
+		const [data, meta] = await this.db.income.paginate({
+			where: {
+				clientId: params.filters?.clientId,
+				id: params.filters?.incomeId,
+				category: params.filters?.category,
+				date: params.filters?.date,
+			},
+			orderBy: params.pagination.sortFild && {
 				[params.pagination.sortFild]: params.pagination.sortDir,
 			},
 			offset: {
-				page: params?.pagination.page,
-				perPage: params?.pagination.perPage,
+				page: params.pagination.page,
+				perPage: params.pagination.perPage,
 			},
 		})
 

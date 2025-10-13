@@ -1,26 +1,24 @@
-import { Injectable, OnModuleDestroy, OnModuleInit } from '@nestjs/common'
-import { ConfigService } from '@nestjs/config'
-import { PrismaClient } from '@prisma/client'
-import { Env } from '../../env/env'
-import { createExtendedClient, ExtendedClient } from './extend-client'
+import { EnvService } from '@/shared'
+import { Injectable, OnModuleInit } from '@nestjs/common'
+import { createExtendedClient, PrismaExtendedClient } from './extend-client'
 
 @Injectable()
-export class PrismaService
-	extends PrismaClient
-	implements OnModuleInit, OnModuleDestroy
-{
-	constructor(private configService: ConfigService<Env, true>) {
-		super()
-		this.extendedClient = createExtendedClient(this.configService)
+export class PrismaService implements OnModuleInit {
+	private readonly client: PrismaExtendedClient
+
+	constructor(private readonly envService: EnvService) {
+		this.client = createExtendedClient(this.envService)
 	}
 
-	readonly extendedClient: ExtendedClient
-
 	async onModuleInit() {
-		await this.$connect()
+		await this.client.$connect()
 	}
 
 	async onModuleDestroy() {
-		await this.$disconnect()
+		await this.client.$disconnect()
+	}
+
+	getClient() {
+		return this.client
 	}
 }

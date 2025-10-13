@@ -24,6 +24,9 @@ export * from './core/events/domain-events'
 export * from './core/events/event-bus'
 export * from './core/events/event-handler'
 
+// Core Presentation
+export * from './core/presentation/collection-presenter'
+
 // Core Search
 export * from './core/search/search-params'
 export * from './core/search/search-result'
@@ -43,4 +46,5 @@ export * from './infra/env/env.service'
 
 // Database Module
 export * from './infra/database/database.module'
+export * from './infra/database/prisma/extend-client'
 export * from './infra/database/prisma/prisma.service'

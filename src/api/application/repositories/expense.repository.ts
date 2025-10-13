@@ -16,8 +16,7 @@ export interface FindUniqueExpenseParams {
 
 export interface ExpenseSearchableFields {
 	clientId: string
-	amount: number
+	expenseId: string
 	date: Date
-	description?: string | null
-	category?: string | null
+	category: string
 }

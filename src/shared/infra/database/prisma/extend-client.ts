@@ -1,9 +1,8 @@
-import { ConfigService } from '@nestjs/config'
 import { PrismaClient } from '@prisma/client'
-import { Env } from '@shared'
+import { EnvService } from '@shared'
 import paginate from 'prisma-extension-paginate'
 
-export function createExtendedClient(env: ConfigService<Env, true>) {
+export function createExtendedClient(env: EnvService) {
 	const client = new PrismaClient()
 	return client.$extends(
 		paginate({
@@ -17,4 +16,4 @@ export function createExtendedClient(env: ConfigService<Env, true>) {
 	)
 }
 
-export type ExtendedClient = ReturnType<typeof createExtendedClient>
+export type PrismaExtendedClient = ReturnType<typeof createExtendedClient>
