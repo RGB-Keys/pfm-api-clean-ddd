@@ -68,14 +68,12 @@ model Expense {
 }
 
 model Goal {
-  id          String    @id @default(uuid(7))
-  target      Decimal
-  saved       Decimal
-  startedAt   DateTime  @default(now())
-  endedAt     DateTime?
-  description String?
-  category    String?
-  updatedAt   DateTime  @default(now()) @updatedAt
+  id        String    @id @default(uuid(7))
+  target    Decimal
+  saved     Decimal
+  startedAt DateTime  @default(now())
+  endedAt   DateTime?
+  updatedAt DateTime  @default(now()) @updatedAt
 
   client   Client @relation(fields: [clientId], references: [id], onDelete: Cascade)
   clientId String
