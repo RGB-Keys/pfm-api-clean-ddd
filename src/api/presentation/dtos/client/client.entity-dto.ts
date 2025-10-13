@@ -1,4 +1,6 @@
 import { ApiProperty, OmitType } from '@nestjs/swagger'
+import { ExpenseBaseEntity } from '../expense/expense.entity-dto'
+import { GoalBaseEntity } from '../goal/goal.entity-dto'
 import { IncomeBaseEntity } from '../income/income.entity-dto'
 import { UserBaseEntity } from '../user/user.entity-dto'
 
@@ -44,9 +46,13 @@ export class ClientResponseEntity extends OmitType(UserBaseEntity, [
 	'passwordHash',
 ]) {}
 
-export class ClientIncomeResponseEntity extends IncomeBaseEntity {}
-
 export class ClientMonthlyIncomeResponseEntity extends OmitType(
 	ClientBaseEntity,
 	['createdAt', 'updatedAt', 'name', 'phoneNumber'],
 ) {}
+
+export class ClientIncomeResponseEntity extends IncomeBaseEntity {}
+
+export class ClientExpenseResponseEntity extends ExpenseBaseEntity {}
+
+export class ClientGoalResponseEntity extends GoalBaseEntity {}
