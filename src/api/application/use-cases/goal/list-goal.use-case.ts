@@ -6,10 +6,9 @@ import { GoalRepository } from '../../repositories/goal.repository'
 
 export type ListGoalUseCaseRequest = SearchParams<{
 	clientId: string
-	target: number
+	goalId: string
 	startedAt: Date
-	endedAt?: Date | null
-	saved: number
+	endedAt: Date
 }>
 
 export type ListGoalUseCaseResponse = Either<

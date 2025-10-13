@@ -6,8 +6,9 @@ import { ExpenseRepository } from '../../repositories/expense.repository'
 
 export type ListExpenseUseCaseRequest = SearchParams<{
 	clientId: string
+	expenseId: string
 	date: Date
-	category?: string | null
+	category: string
 }>
 
 export type ListExpenseUseCaseResponse = Either<

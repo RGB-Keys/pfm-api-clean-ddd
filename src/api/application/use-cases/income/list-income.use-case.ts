@@ -6,8 +6,9 @@ import { IncomeRepository } from '../../repositories/income.repository'
 
 export type ListIncomeUseCaseRequest = SearchParams<{
 	clientId: string
+	incomeId: string
 	date: Date
-	category?: string | null
+	category: string
 }>
 
 export type ListIncomeUseCaseResponse = Either<
