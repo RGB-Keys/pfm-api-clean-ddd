@@ -12,7 +12,7 @@ interface CreateExpenseUseCaseRequest {
 	amount: number
 	date: Date
 	description?: string
-	category: string
+	category?: string
 }
 
 type CreateExpenseUseCaseResponse = Either<
@@ -42,7 +42,7 @@ export class CreateExpenseUseCase {
 		const expense = Expense.create({
 			clientId: new UniqueEntityId(client.id.toString()),
 			amount: new Money(amount),
-			category: new Category(category),
+			category: category ? new Category(category) : undefined,
 			date,
 			description,
 		})
