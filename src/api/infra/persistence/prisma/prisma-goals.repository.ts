@@ -5,7 +5,12 @@ import {
 	GoalSearchableFields,
 } from '@/api/application/repositories/goal.repository'
 import { Goal } from '@/api/domain/entities/goal.entity'
-import { OutputCollectionDTO, PrismaService, SearchParams } from '@/shared'
+import {
+	OutputCollectionDTO,
+	PrismaExtendedClient,
+	PrismaService,
+	SearchParams,
+} from '@/shared'
 import { Injectable } from '@nestjs/common'
 import {
 	GoalSummarytoDTO,
@@ -14,10 +19,14 @@ import {
 
 @Injectable()
 export class PrismaGoalRepository implements GoalRepository {
-	constructor(private prisma: PrismaService) {}
+	private readonly db: PrismaExtendedClient
+
+	constructor(private prisma: PrismaService) {
+		this.db = prisma.getClient()
+	}
 
 	async findUnique({ goalId }: FindUniqueGoalParams): Promise<Goal | null> {
-		const goal = await this.prisma.goal.findUnique({
+		const goal = await this.db.goal.findUnique({
 			where: { id: goalId },
 		})
 
@@ -27,16 +36,21 @@ export class PrismaGoalRepository implements GoalRepository {
 	}
 
 	async listSummary(
-		params?: SearchParams<GoalSearchableFields>,
+		params: SearchParams<GoalSearchableFields>,
 	): Promise<OutputCollectionDTO<GoalSummaryDTO>> {
-		const [data, meta] = await this.prisma.extendedClient.goal.paginate({
-			where: params?.filters,
-			orderBy: params?.pagination.sortFild && {
+		const [data, meta] = await this.db.goal.paginate({
+			where: {
+				id: params.filters?.goalId,
+				clientId: params.filters?.clientId,
+				startedAt: params.filters?.startedAt,
+				endedAt: params.filters?.endedAt,
+			},
+			orderBy: params.pagination.sortFild && {
 				[params.pagination.sortFild]: params.pagination.sortDir,
 			},
 			offset: {
-				page: params?.pagination.page,
-				perPage: params?.pagination.perPage,
+				page: params.pagination.page,
+				perPage: params.pagination.perPage,
 			},
 		})
 

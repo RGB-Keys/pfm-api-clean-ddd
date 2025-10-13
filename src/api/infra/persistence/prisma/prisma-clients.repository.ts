@@ -3,19 +3,23 @@ import {
 	FindUniqueClientParams,
 } from '@/api/application/repositories/client.repository'
 import { Client } from '@/api/domain/entities/client.entity'
-import { PrismaService } from '@/shared/infra/database/prisma/prisma.service'
+import { PrismaExtendedClient, PrismaService } from '@/shared'
 import { Injectable } from '@nestjs/common'
 import { PrismaClientMapper } from '../mappers/prisma-client.mapper'
 
 @Injectable()
 export class PrismaClientRepository implements ClientRepository {
-	constructor(private prisma: PrismaService) {}
+	private readonly db: PrismaExtendedClient
+
+	constructor(private prisma: PrismaService) {
+		this.db = prisma.getClient()
+	}
 
 	async findUnique({
 		email,
 		clientId,
 	}: FindUniqueClientParams): Promise<Client | null> {
-		const client = await this.prisma.client.findFirst({
+		const client = await this.db.client.findFirst({
 			where: {
 				OR: [{ id: clientId }, { user: { email } }],
 			},
@@ -33,7 +37,7 @@ export class PrismaClientRepository implements ClientRepository {
 	}
 
 	async create(client: Client): Promise<void> {
-		await this.prisma.client.create({
+		await this.db.client.create({
 			data: PrismaClientMapper.toPrismaCreate(client),
 		})
 	}
@@ -41,7 +45,7 @@ export class PrismaClientRepository implements ClientRepository {
 	async save(client: Client): Promise<void> {
 		const data = PrismaClientMapper.toPrismaUpdate(client)
 
-		await this.prisma.client.update({
+		await this.db.client.update({
 			where: { id: client.id.toString() },
 			data,
 		})
@@ -50,6 +54,6 @@ export class PrismaClientRepository implements ClientRepository {
 	async remove(client: Client): Promise<void> {
 		const data = PrismaClientMapper.toPrismaCreate(client)
 
-		await this.prisma.client.delete({ where: { id: data.id } })
+		await this.db.client.delete({ where: { id: data.id } })
 	}
 }
