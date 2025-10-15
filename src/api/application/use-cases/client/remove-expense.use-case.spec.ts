@@ -31,6 +31,7 @@ describe('Remove Expense Use Case', async () => {
 		eventBus = {
 			markAggregateForDispatch: vi.fn(),
 			dispatchEventsForAggregate: vi.fn(),
+			emit: vi.fn(),
 		}
 
 		sut = new RemoveExpenseUseCase(

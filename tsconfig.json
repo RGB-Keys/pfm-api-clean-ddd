@@ -25,6 +25,8 @@
 			"@/*": ["./src/*"],
 			"@shared": ["./src/shared/"],
 			"@shared/*": ["./src/shared/*"],
+			"@workers/": ["./src/worker/"],
+      "@workers/*": ["./src/worker/*"],
 			"@swagger/*": ["./src/api/infra/http/swagger/*"]
 		},
 		"types": ["vitest/globals"]

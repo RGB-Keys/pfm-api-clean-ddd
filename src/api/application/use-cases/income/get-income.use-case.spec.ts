@@ -31,7 +31,7 @@ describe('Get Income Use Case', async () => {
 		eventBus = {
 			markAggregateForDispatch: vi.fn(),
 			dispatchEventsForAggregate: vi.fn(),
-		}
+		} as unknown as EventBus
 
 		sut = new GetIncomeUseCase(clientRepository, incomeRepository)
 	})

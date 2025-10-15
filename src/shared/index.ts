@@ -11,6 +11,8 @@ export * from './core/entities/watched-list'
 
 // Core Enums
 export * from './core/enums/http-status-code'
+export * from './core/enums/jobs'
+export * from './core/enums/queues'
 
 // Core Errors
 export * from './core/errors/domain/domain-error.abstract'

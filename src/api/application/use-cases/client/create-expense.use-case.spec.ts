@@ -23,6 +23,7 @@ describe('Create Expense Use Case', () => {
 		eventBus = {
 			markAggregateForDispatch: vi.fn(),
 			dispatchEventsForAggregate: vi.fn(),
+			emit: vi.fn(),
 		}
 		sut = new CreateExpenseUseCase(clientRepository, eventBus)
 	})

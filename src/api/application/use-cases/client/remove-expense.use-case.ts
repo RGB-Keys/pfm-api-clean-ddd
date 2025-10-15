@@ -2,7 +2,7 @@ import { ClientNotFoundError } from '@/api/core/errors/domain/client/client-not-
 import { ExpenseNotFoundError } from '@/api/core/errors/domain/expense/expense-not-found-error'
 import { Either, fail, success } from '@/shared/core/errors/either/either'
 import { EventBus } from '@/shared/core/events/event-bus'
-import { NotAllowedError, UniqueEntityId } from '@shared'
+import { JOBS, NotAllowedError, UniqueEntityId } from '@shared'
 import { ClientRepository } from '../../repositories/client.repository'
 import { ExpenseRepository } from '../../repositories/expense.repository'
 
@@ -38,6 +38,7 @@ export class RemoveExpenseUseCase {
 		client.removeExpense(expense)
 
 		this.eventBus.dispatchEventsForAggregate(client.id as UniqueEntityId)
+		this.eventBus.emit(JOBS.BALANCE, { clientId })
 		await this.clientRepository.save(client)
 		return success(undefined)
 	}

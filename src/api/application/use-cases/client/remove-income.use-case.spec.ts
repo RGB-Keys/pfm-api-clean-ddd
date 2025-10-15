@@ -30,6 +30,7 @@ describe('Remove Income Use Case', async () => {
 		eventBus = {
 			markAggregateForDispatch: vi.fn(),
 			dispatchEventsForAggregate: vi.fn(),
+			emit: vi.fn(),
 		}
 
 		sut = new RemoveIncomeUseCase(clientRepository, incomeRepository, eventBus)

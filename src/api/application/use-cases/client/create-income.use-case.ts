@@ -2,7 +2,7 @@ import { ClientNotFoundError } from '@/api/core/errors/domain/client/client-not-
 import { Income } from '@/api/domain/entities/income.entity'
 import { Category } from '@/api/domain/entities/value-objects/category.value-object'
 import { Money } from '@/api/domain/entities/value-objects/money.value-object'
-import { UniqueEntityId } from '@/shared'
+import { JOBS, UniqueEntityId } from '@/shared'
 import { Either, fail, success } from '@/shared/core/errors/either/either'
 import { EventBus } from '@/shared/core/events/event-bus'
 import { ClientRepository } from '../../repositories/client.repository'
@@ -49,6 +49,7 @@ export class CreateIncomeUseCase {
 
 		client.addIncome(income)
 		this.eventBus.dispatchEventsForAggregate(client.id as UniqueEntityId)
+		this.eventBus.emit(JOBS.BALANCE, { clientId })
 		await this.clientRepository.save(client)
 
 		return success({ income })

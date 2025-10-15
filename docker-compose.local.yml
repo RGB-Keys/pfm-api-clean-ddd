@@ -1,5 +1,6 @@
 volumes:
   postgres_pfm_local:
+  redis_pfm_local:
 
 services:
   postgres:
@@ -12,3 +13,26 @@ services:
       - 9004:5432
     volumes:
       - postgres_pfm_local:/var/lib/postgres
+    
+  redis:
+    image: redis
+    container_name: redis_pfm_local
+    restart: always
+    env_file:
+      - ./.env
+    ports:
+      - 6379:6379
+    volumes:
+      - redis_pfm_local:/data
+      - ./redis-local.conf:/usr/local/etc/redis/redis.conf
+    command: ["redis-server", "/usr/local/etc/redis/redis.conf"]
+
+  redis-commander:
+    image: rediscommander/redis-commander:latest
+    container_name: redis-commander
+    environment:
+      - REDIS_HOSTS=local:redis:6379
+    ports:
+      - '8081:8081'
+    depends_on:
+      - redis

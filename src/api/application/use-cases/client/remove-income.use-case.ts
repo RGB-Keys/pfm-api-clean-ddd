@@ -1,6 +1,6 @@
 import { ClientNotFoundError } from '@/api/core/errors/domain/client/client-not-found-error'
 import { IncomeNotFoundError } from '@/api/core/errors/domain/income/income-not-found-error'
-import { NotAllowedError, UniqueEntityId } from '@/shared'
+import { JOBS, NotAllowedError, UniqueEntityId } from '@/shared'
 import { Either, fail, success } from '@/shared/core/errors/either/either'
 import { EventBus } from '@/shared/core/events/event-bus'
 import { ClientRepository } from '../../repositories/client.repository'
@@ -38,6 +38,7 @@ export class RemoveIncomeUseCase {
 		client.removeIncome(income)
 
 		this.eventBus.dispatchEventsForAggregate(client.id as UniqueEntityId)
+		this.eventBus.emit(JOBS.BALANCE, { clientId })
 		await this.clientRepository.save(client)
 		return success(undefined)
 	}
