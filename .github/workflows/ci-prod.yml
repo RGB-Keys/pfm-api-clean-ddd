@@ -39,5 +39,5 @@ jobs:
           REGISTRY: ${{ steps.login-ecr.outputs.registry}}
           TAG: ${{ steps.generate_tag.outputs.sha }}
         run: |
-          docker build -t $REGISTRY/pfm-ci-api:$TAG .
-          docker push $REGISTRY/pfm-ci-api:$TAG
+          docker build -t $REGISTRY/pfm-ci:$TAG .
+          docker push $REGISTRY/pfm-ci:$TAG
