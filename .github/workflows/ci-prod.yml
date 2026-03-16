@@ -61,7 +61,7 @@ jobs:
           service: pfm-api
           image: ${{ steps.login-ecr.outputs.registry}}/pfm-ci@${{ steps.build-docker-image.outputs.digest}}
           access-role-arn: ${{ secrets.ARN_APP_RUNNER_ROLE }}
-          region: us-east-1s
+          region: us-east-1
           cpu: 1
           memory: 2
           port: 3000
