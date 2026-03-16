@@ -5,10 +5,12 @@ on:
     branches:
       - main
       - dev
+  pull_request:
+    types: [opened, reopened]
 
 jobs:
   build:
-    name: 'Build'
+    name: 'Build and Push'
     runs-on: ubuntu-latest
     environment: pfm-api-dev
     steps:
@@ -27,8 +29,14 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      - name: Run docker image
-        run: docker build -t rgbkeys/pfm-ci-api:${{ steps.generate_tag.outputs.sha }} .
+      - name: Build and Push
+        uses: docker/build-push-action@v5
+        with:
+          push: true
+          tags: rgbkeys/pfm-ci-api:${{ steps.generate_tag.outputs.sha }}, rgbkeys/pfm-ci-api:latest
 
-      - name: Push image
-        run: docker push rgbkeys/pfm-ci-api:${{ steps.generate_tag.outputs.sha }}
+      # - name: Run docker image
+      #   run: docker build -t rgbkeys/pfm-ci-api:${{ steps.generate_tag.outputs.sha }} .
+
+      # - name: Push image
+      #   run: docker push rgbkeys/pfm-ci-api:${{ steps.generate_tag.outputs.sha }}
