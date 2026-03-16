@@ -50,14 +50,9 @@ jobs:
       - name: Build Docker Image
         uses: docker/build-push-action@v5
         id: build-docker-image
-        env:
-          REGISTRY: ${{ steps.login-ecr.outputs.registry}}
-          TAG: ${{ steps.generate_tag.outputs.sha }}
         with:
           push: true
-          tags: |
-            ${{ steps.login-ecr.outputs.registry }}/pfm-ci:${{ steps.generate_tag.outputs.sha }}
-            ${{ steps.login-ecr.outputs.registry }}/pfm-ci:latest
+          tags: ${{ steps.login-ecr.outputs.registry }}/pfm-ci:${{ steps.generate_tag.outputs.sha }}, ${{ steps.login-ecr.outputs.registry }}/pfm-ci:latest
 
       - name: Deploy to App Runner
         id: deploy-app-runner
