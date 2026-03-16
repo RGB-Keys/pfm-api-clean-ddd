@@ -1,8 +1,6 @@
-import { AggregateRoot } from '@/api/core/entities/aggregate-root'
-import { UniqueEntityId } from '@/api/core/entities/value-objects/unique-entity-id'
-import { Optional } from '@/api/core/types/optional'
-import { validateProps } from '@/api/core/utils/validateProps.utils'
-import { validateString } from '@/api/core/utils/validateString.utils'
+import { validateProps } from '@/shared/core/utils/validateProps.utils'
+import { validateString } from '@/shared/core/utils/validateString.utils'
+import { AggregateRoot, UniqueEntityId } from '@shared'
 import { UserRole } from '../enums/user/role'
 
 export interface UserProps {
@@ -23,7 +21,7 @@ export class User extends AggregateRoot {
 	public updatedAt?: Date | null
 
 	protected constructor(
-		input: Optional<UserProps, 'createdAt' | 'role'>,
+		input: Omit<UserProps, 'createdAt'>,
 		id?: UniqueEntityId,
 	) {
 		super(id)
@@ -32,11 +30,11 @@ export class User extends AggregateRoot {
 		this.passwordHash = input.passwordHash
 		this.role = input.role ?? UserRole.CLIENT
 		this.avatarUrl = input.avatarUrl
-		this.createdAt = input.createdAt ?? new Date()
+		this.createdAt = new Date()
 		this.updatedAt = input.updatedAt
 	}
 
-	static restoure(input: UserProps, id?: UniqueEntityId): User {
+	protected restore(input: UserProps, id?: UniqueEntityId): User {
 		return new User(input, id)
 	}
 

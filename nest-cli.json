@@ -27,6 +27,15 @@
 				]
 			}
 		},
+    "workers": {
+      "type": "application",
+      "root": "src/workers",
+      "entryFile": "main",
+      "sourceRoot": "src/workers",
+      "compilerOptions": {
+        "tsConfigPath": "src/workers/tsconfig.app.json"
+      }
+    },
     "shared": {
 			"type": "library",
 			"root": "src/shared",

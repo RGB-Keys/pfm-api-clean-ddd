@@ -1,0 +1,40 @@
+services:
+  pfm_dev_api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        APP_NAME: api
+    container_name: pfm_dev_api
+    ports:
+      - "9778:9778"
+    env_file:
+      - ./.env
+    environment:
+      - APP_NAME=api
+    deploy:
+      resources:
+        limits:
+          cpus: "0.95"
+          memory: 512M
+        reservations:
+          memory: 256M
+          
+  pfm_dev_workers:
+    build: 
+      context: .
+      dockerfile: Dockerfile
+      args: 
+        APP_NAME: workers
+    container_name: pfm_dev_workers
+    env_file:
+      - ./.env
+    environment: 
+      - APP_NAME=workers
+    deploy:
+      resources:
+        limits:
+          cpus: "0.95"
+          memory: 512M
+        reservations:
+          memory: 256M

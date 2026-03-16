@@ -1,7 +1,7 @@
-import { DomainEvent } from '@/api/core/events/domain-event'
-import { UniqueEntityId } from '@/api/core/entities/value-objects/unique-entity-id'
-import { Money } from '../../entities/value-objects/money.value-object'
+import { UniqueEntityId } from '@/shared'
+import { DomainEvent } from '@/shared/core/events/domain-event'
 import { Category } from '../../entities/value-objects/category.value-object'
+import { Money } from '../../entities/value-objects/money.value-object'
 
 export class ExpenseAddedEvent extends DomainEvent {
 	public occurredAt: Date

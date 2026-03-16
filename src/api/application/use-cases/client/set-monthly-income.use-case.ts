@@ -1,6 +1,6 @@
-import { Money } from '@/api/domain/entities/value-objects/money.value-object'
-import { Either, fail, success } from '@/api/core/errors/either/either'
 import { ClientNotFoundError } from '@/api/core/errors/domain/client/client-not-found-error'
+import { Money } from '@/api/domain/entities/value-objects/money.value-object'
+import { Either, fail, success } from '@/shared/core/errors/either/either'
 import { ClientRepository } from '../../repositories/client.repository'
 
 interface SetMonthlyIncomeUseCaseRequest {
@@ -12,12 +12,12 @@ type SetMonthlyIncomeUseCaseResponse = Either<
 	ClientNotFoundError,
 	{
 		clientId: string
-		monthlyIncome: string
+		monthlyIncome: number
 	}
 >
 
 export class SetMonthlyIncomeUseCase {
-	constructor(private clientRepository: ClientRepository) {}
+	constructor(private readonly clientRepository: ClientRepository) {}
 
 	async execute({
 		clientId,
@@ -33,7 +33,7 @@ export class SetMonthlyIncomeUseCase {
 
 		return success({
 			clientId: client.id.toString(),
-			monthlyIncome: client.monthlyIncome?.formatted ?? '0.00',
+			monthlyIncome: client.monthlyIncome.value.parsedAmount,
 		})
 	}
 }

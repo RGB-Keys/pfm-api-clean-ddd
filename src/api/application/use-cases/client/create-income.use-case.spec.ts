@@ -1,24 +1,48 @@
-import { CreateIncomeUseCase } from './create-income.use-case'
-import { Income } from '@/api/domain/entities/income.entity'
-import { Client } from '@/api/domain/entities/client.entity'
-import { InMemoryClientRepository } from '@/shared/tests/in-memory/in-memory-client.repository'
 import { ClientNotFoundError } from '@/api/core/errors/domain/client/client-not-found-error'
+import { Client } from '@/api/domain/entities/client.entity'
+import { Income } from '@/api/domain/entities/income.entity'
+import { Category } from '@/api/domain/entities/value-objects/category.value-object'
+import { Money } from '@/api/domain/entities/value-objects/money.value-object'
+import { UniqueEntityId } from '@/shared'
+import { EventBus } from '@/shared/core/events/event-bus'
+import { ClientRepository } from '../../repositories/client.repository'
+import { CreateIncomeUseCase } from './create-income.use-case'
 
 describe('Create Income Use Case', () => {
-	let clientRepository: InMemoryClientRepository
+	let clientRepository: ClientRepository
+	let eventBus: EventBus
 	let sut: CreateIncomeUseCase
 
 	beforeEach(() => {
-		clientRepository = new InMemoryClientRepository()
-		sut = new CreateIncomeUseCase(clientRepository)
+		clientRepository = {
+			create: vi.fn(),
+			findUnique: vi.fn(),
+			save: vi.fn(),
+		} as unknown as ClientRepository
+
+		eventBus = {
+			markAggregateForDispatch: vi.fn(),
+			dispatchEventsForAggregate: vi.fn(),
+			emit: vi.fn(),
+		} as unknown as EventBus
+
+		sut = new CreateIncomeUseCase(clientRepository, eventBus)
 	})
 
 	it('should be able to create a new income', async () => {
-		const client = await mockClient()
+		const { client } = await mockClient()
+
+		const findClient = vi
+			.spyOn(clientRepository, 'findUnique')
+			.mockResolvedValueOnce(client)
+
+		const savedClient = vi
+			.spyOn(clientRepository, 'save')
+			.mockResolvedValueOnce()
 
 		const request = {
 			clientId: client.id.toString(),
-			amount: 100.0,
+			amount: 100,
 			category: 'Olx',
 			date: new Date('2025-08-20'),
 			description: 'Vendi um livro',
@@ -26,21 +50,40 @@ describe('Create Income Use Case', () => {
 
 		const result = await sut.execute(request)
 
+		expect(savedClient).toHaveBeenCalledWith(client)
+		expect(findClient).toHaveBeenCalledWith({ clientId: client.id.toString() })
 		expect(result.isSuccess()).toBe(true)
 		if (result.isSuccess()) {
 			const { income } = result.value
 			expect(income).toBeInstanceOf(Income)
 			expect(income).toMatchObject({
-				clientId: client.incomes[0].clientId,
-				amount: client.incomes[0].amount,
-				category: client.incomes[0].category,
-				date: client.incomes[0].date,
-				description: client.incomes[0].description,
+				clientId: client.incomes.items[0].clientId,
+				amount: client.incomes.items[0].amount,
+				category: client.incomes.items[0].category,
+				date: client.incomes.items[0].date,
+				description: client.incomes.items[0].description,
 			})
 		}
 	})
 
+	it('should track new incomes in watched list', async () => {
+		const { client } = await mockClient()
+
+		const income = Income.create({
+			clientId: client.id as UniqueEntityId,
+			amount: new Money(100),
+			category: new Category('Aluguel'),
+		})
+
+		client.addIncome(income)
+
+		expect(client.incomes.newItems).toContain(income)
+		expect(client.incomes.items).toHaveLength(1)
+	})
+
 	it('should not be able to create a income if client not exists', async () => {
+		vi.spyOn(clientRepository, 'findUnique').mockResolvedValueOnce(null)
+
 		const request = {
 			clientId: 'wrong-id',
 			amount: 1000,
@@ -61,8 +104,9 @@ describe('Create Income Use Case', () => {
 			name: 'testualdo',
 			passwordHash: 'some_password',
 		})
+
 		await clientRepository.create(client)
 
-		return client
+		return { client }
 	}
 })

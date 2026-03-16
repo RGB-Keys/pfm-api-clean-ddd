@@ -1,9 +1,8 @@
-import { Entity } from '@/api/core/entities/entity'
+import { Optional } from '@/shared/core/types/optional'
+import { validateProps } from '@/shared/core/utils/validateProps.utils'
+import { Entity, UniqueEntityId } from '@shared'
 import { Category } from './value-objects/category.value-object'
-import { UniqueEntityId } from '@/api/core/entities/value-objects/unique-entity-id'
 import { Money } from './value-objects/money.value-object'
-import { Optional } from '@/api/core/types/optional'
-import { validateProps } from '@/api/core/utils/validateProps.utils'
 
 export interface ExpenseProps {
 	clientId: Expense['clientId']
@@ -27,7 +26,7 @@ export class Expense extends Entity {
 
 		this.clientId = props.clientId
 		this.amount = props.amount
-		this.date = props.date ?? new Date()
+		this.date = props.date
 		this.description = props.description
 		this.category = props.category
 		this.updatedAt = props.updatedAt
@@ -71,4 +70,4 @@ export class Expense extends Entity {
 	}
 }
 
-type ExpenseCreateArgs = Optional<ExpenseProps, 'date'>
+type ExpenseCreateArgs = Optional<ExpenseProps, 'date' | 'category'>

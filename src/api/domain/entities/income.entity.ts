@@ -1,9 +1,8 @@
-import { Entity } from '@/api/core/entities/entity'
+import { Optional } from '@/shared/core/types/optional'
+import { validateProps } from '@/shared/core/utils/validateProps.utils'
+import { Entity, UniqueEntityId } from '@shared'
 import { Category } from './value-objects/category.value-object'
-import { UniqueEntityId } from '@/api/core/entities/value-objects/unique-entity-id'
 import { Money } from './value-objects/money.value-object'
-import { validateProps } from '@/api/core/utils/validateProps.utils'
-import { Optional } from '@/api/core/types/optional'
 
 export interface IncomeProps {
 	clientId: Income['clientId']
@@ -22,15 +21,12 @@ export class Income extends Entity {
 	public category?: Category | null
 	public updatedAt?: Date | null
 
-	private constructor(
-		props: Optional<IncomeProps, 'date'>,
-		id?: UniqueEntityId,
-	) {
+	private constructor(props: IncomeProps, id?: UniqueEntityId) {
 		super(id)
 
 		this.clientId = props.clientId
 		this.amount = props.amount
-		this.date = props.date ?? new Date()
+		this.date = props.date
 		this.description = props.description
 		this.category = props.category
 		this.updatedAt = props.updatedAt
@@ -43,14 +39,12 @@ export class Income extends Entity {
 		this.updatedAt = new Date()
 	}
 
-	static create(
-		props: Optional<IncomeProps, 'date'>,
-		id?: UniqueEntityId,
-	): Income {
+	static create(props: IncomeCreateArgs, id?: UniqueEntityId): Income {
 		return new Income(
 			{
 				...props,
 				date: props.date ?? new Date(),
+				category: props.category ?? null,
 			},
 			id,
 		)
@@ -75,3 +69,5 @@ export class Income extends Entity {
 		)
 	}
 }
+
+type IncomeCreateArgs = Optional<IncomeProps, 'date' | 'category'>

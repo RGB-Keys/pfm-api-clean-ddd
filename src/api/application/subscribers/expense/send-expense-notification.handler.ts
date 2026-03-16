@@ -1,5 +1,5 @@
-import { DomainEvents } from '@/api/core/events/domain-events'
-import { EventHandler } from '@/api/core/events/event-handler'
+import { DomainEvents } from '@/shared/core/events/domain-events'
+import { EventHandler } from '@/shared/core/events/event-handler'
 import { ExpenseAddedEvent } from '../../../domain/events/expense/expense-added.event'
 
 export class SendExpenseNotificationHandler implements EventHandler {

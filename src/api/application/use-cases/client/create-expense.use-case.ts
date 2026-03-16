@@ -1,18 +1,18 @@
-import { Expense } from '@/api/domain/entities/expense.entity'
-import { Either, fail, success } from '@/api/core/errors/either/either'
-import { UniqueEntityId } from '@/api/core/entities/value-objects/unique-entity-id'
-import { Money } from '@/api/domain/entities/value-objects/money.value-object'
-import { Category } from '@/api/domain/entities/value-objects/category.value-object'
-import { ClientRepository } from '../../repositories/client.repository'
 import { ClientNotFoundError } from '@/api/core/errors/domain/client/client-not-found-error'
-import { DomainEvents } from '@/api/core/events/domain-events'
+import { Expense } from '@/api/domain/entities/expense.entity'
+import { Category } from '@/api/domain/entities/value-objects/category.value-object'
+import { Money } from '@/api/domain/entities/value-objects/money.value-object'
+import { JOBS, UniqueEntityId } from '@/shared'
+import { Either, fail, success } from '@/shared/core/errors/either/either'
+import { EventBus } from '@/shared/core/events/event-bus'
+import { ClientRepository } from '../../repositories/client.repository'
 
 interface CreateExpenseUseCaseRequest {
 	clientId: string
 	amount: number
 	date: Date
 	description?: string
-	category: string
+	category?: string
 }
 
 type CreateExpenseUseCaseResponse = Either<
@@ -23,7 +23,10 @@ type CreateExpenseUseCaseResponse = Either<
 >
 
 export class CreateExpenseUseCase {
-	constructor(private clientRepository: ClientRepository) {}
+	constructor(
+		private readonly clientRepository: ClientRepository,
+		private readonly eventBus: EventBus,
+	) {}
 
 	async execute({
 		clientId,
@@ -39,13 +42,14 @@ export class CreateExpenseUseCase {
 		const expense = Expense.create({
 			clientId: new UniqueEntityId(client.id.toString()),
 			amount: new Money(amount),
-			category: new Category(category),
+			category: category ? new Category(category) : undefined,
 			date,
 			description,
 		})
 
 		client.addExpense(expense)
-		DomainEvents.dispatchEventsForAggregate(client.id as UniqueEntityId)
+		this.eventBus.dispatchEventsForAggregate(client.id as UniqueEntityId)
+		this.eventBus.emit(JOBS.BALANCE, { clientId })
 		await this.clientRepository.save(client)
 
 		return success({ expense })
