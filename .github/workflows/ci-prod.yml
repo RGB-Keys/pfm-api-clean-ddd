@@ -55,7 +55,9 @@ jobs:
           TAG: ${{ steps.generate_tag.outputs.sha }}
         with:
           push: true
-          tags: $REGISTRY/pfm-ci:$TAG, rgbkeys/pfm-ci-api:latest
+          tags: |
+            ${{ steps.login-ecr.outputs.registry }}/pfm-ci:${{ steps.generate_tag.outputs.sha }}
+            ${{ steps.login-ecr.outputs.registry }}/pfm-ci:latest
 
       - name: Deploy to App Runner
         id: deploy-app-runner
