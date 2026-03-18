@@ -47,11 +47,6 @@ export class Money extends ValueObject<{ parsedAmount: number }> {
 	public subtract(other: Money): Money {
 		const result = this.amount - other.amount
 		if (isNaN(result)) throw new ValidationError('Invalid money operation')
-		if (result < 0) {
-			throw new ValidationError(
-				'The result of the operation cannot be negative.',
-			)
-		}
 		return new Money(result)
 	}
 
