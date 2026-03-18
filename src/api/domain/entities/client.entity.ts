@@ -3,7 +3,6 @@ import { validateProps } from '@/shared/core/utils/validateProps.utils'
 import { validateString } from '@/shared/core/utils/validateString.utils'
 import { UniqueEntityId, ValidationError } from '@shared'
 import { UserRole } from '../enums/user/role'
-import { BalanceUpdatedEvent } from '../events/client/balanceUpdated.event'
 import { ExpenseAddedEvent } from '../events/expense/expense-added.event'
 import { ExpenseRemovedEvent } from '../events/expense/expense-removed.event'
 import { GoalAddedEvent } from '../events/goal/goal-added.event'
@@ -25,6 +24,7 @@ export interface ClientProps extends UserProps {
 	name: Client['name']
 	phoneNumber?: Client['phoneNumber']
 	monthlyIncome: Client['monthlyIncome']
+	balance: Client['balance']
 	incomes: Client['incomes']
 	expenses: Client['expenses']
 	goals: Client['goals']
@@ -34,6 +34,7 @@ export class Client extends User {
 	public name: string
 	public phoneNumber?: string | null
 	public monthlyIncome: Money
+	public balance: Money
 	public incomes: IncomeList
 	public expenses: ExpenseList
 	public goals: GoalList
@@ -51,6 +52,7 @@ export class Client extends User {
 		this.name = input.name
 		this.phoneNumber = input.phoneNumber
 		this.monthlyIncome = input.monthlyIncome
+		this.balance = input.balance
 		this.incomes = input.incomes
 		this.expenses = input.expenses
 		this.goals = input.goals
@@ -92,6 +94,11 @@ export class Client extends User {
 		this.touch()
 	}
 
+	public setBalance(newBalance: Money) {
+		this.balance = newBalance
+		this.touch()
+	}
+
 	public addIncome(income: Income) {
 		if (!income.clientId.equals(this.id))
 			throw new ValidationError('income belongs to other client')
@@ -109,15 +116,6 @@ export class Client extends User {
 				income.description,
 			),
 		)
-
-		//TODO: Mudar para um job
-
-		this.addDomainEvent(
-			new BalanceUpdatedEvent(
-				new UniqueEntityId(this.id.toString()),
-				this.balance(),
-			),
-		)
 	}
 
 	public removeIncome(income: Income) {
@@ -130,26 +128,17 @@ export class Client extends User {
 				new UniqueEntityId(this.id.toString()),
 			),
 		)
-
-		//TODO: Mudar para um job
-
-		this.addDomainEvent(
-			new BalanceUpdatedEvent(
-				new UniqueEntityId(this.id.toString()),
-				this.balance(),
-			),
-		)
 	}
 
 	public addExpense(expense: Expense) {
 		if (!expense.clientId.equals(this.id))
 			throw new ValidationError('expense belongs to other client')
 
-		const availableBalance = this.balance()
+		// const availableBalance = this.balance()
 
-		if (expense.amount.value > availableBalance.value) {
-			throw new ValidationError('Expense exceeds available balance')
-		}
+		// if (expense.amount.value > availableBalance.value) {
+		// 	throw new ValidationError('Expense exceeds available balance')
+		// }
 
 		this.expenses.add(expense)
 		this.touch()
@@ -164,15 +153,6 @@ export class Client extends User {
 				expense.description,
 			),
 		)
-
-		//TODO: Mudar para um job
-
-		this.addDomainEvent(
-			new BalanceUpdatedEvent(
-				new UniqueEntityId(this.id.toString()),
-				this.balance(),
-			),
-		)
 	}
 
 	public removeExpense(expense: Expense) {
@@ -183,15 +163,6 @@ export class Client extends User {
 			new ExpenseRemovedEvent(
 				new UniqueEntityId(expense.id.toString()),
 				new UniqueEntityId(this.id.toString()),
-			),
-		)
-
-		//TODO: Mudar para um job
-
-		this.addDomainEvent(
-			new BalanceUpdatedEvent(
-				new UniqueEntityId(this.id.toString()),
-				this.balance(),
 			),
 		)
 	}
@@ -233,15 +204,6 @@ export class Client extends User {
 				new UniqueEntityId(this.id.toString()),
 			),
 		)
-
-		//TODO: Mudar para um job
-
-		this.addDomainEvent(
-			new BalanceUpdatedEvent(
-				new UniqueEntityId(this.id.toString()),
-				this.balance(),
-			),
-		)
 	}
 
 	public contribute(goal: Goal, amount: Money): void {
@@ -276,7 +238,7 @@ export class Client extends User {
 		}
 	}
 
-	private balance(): Money {
+	public updateBalance(): Money {
 		const safeAmount = (amount?: Money | null) => {
 			if (!amount) return new Money(0)
 			return amount
@@ -306,6 +268,7 @@ export class Client extends User {
 				...args,
 				role: UserRole.CLIENT,
 				monthlyIncome: new Money(0),
+				balance: new Money(0),
 				incomes: new IncomeList([]),
 				expenses: new ExpenseList([]),
 				goals: new GoalList([]),
@@ -332,7 +295,13 @@ export class Client extends User {
 
 type ClientCreateArgs = Omit<
 	ClientProps,
-	'monthlyIncome' | 'incomes' | 'goals' | 'expenses' | 'role' | 'createdAt'
+	| 'monthlyIncome'
+	| 'balance'
+	| 'incomes'
+	| 'goals'
+	| 'expenses'
+	| 'role'
+	| 'createdAt'
 >
 
 type ClientUpdateArgs = Optional<
@@ -344,6 +313,7 @@ type ClientUpdateArgs = Optional<
 	| 'phoneNumber'
 	| 'role'
 	| 'monthlyIncome'
+	| 'balance'
 	| 'createdAt'
 	| 'expenses'
 	| 'goals'

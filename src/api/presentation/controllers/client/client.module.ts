@@ -5,6 +5,7 @@ import { Module } from '@nestjs/common'
 import { CreateExpenseController } from './create-expense/create-expense.controller'
 import { CreateGoalController } from './create-goal/create-goal.controller'
 import { CreateIncomeController } from './create-income/create-income.controller'
+import { FinancialReportController } from './financial-report/financial-report.controller'
 import { SetMonthlyIncomeController } from './set-monthly-income/set-monthly-income.controller'
 
 @Module({
@@ -13,6 +14,7 @@ import { SetMonthlyIncomeController } from './set-monthly-income/set-monthly-inc
 		CreateIncomeController,
 		CreateExpenseController,
 		CreateGoalController,
+		FinancialReportController,
 		SetMonthlyIncomeController,
 	],
 })

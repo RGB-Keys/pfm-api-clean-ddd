@@ -7,8 +7,6 @@ export function swaggerSetup(app: INestApplication) {
 		.setTitle('Personal Finance Manager')
 		.setDescription('Documentação do PFM')
 		.setVersion('1.0')
-		.addServer('http://localhost:3000/', 'Local environment')
-		// .addServer('http://185.173.110.102:9778/', 'Dev')
 		.addBearerAuth()
 		.build()
 

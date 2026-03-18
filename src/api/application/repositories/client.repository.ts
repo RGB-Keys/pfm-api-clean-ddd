@@ -11,3 +11,18 @@ export interface FindUniqueClientParams {
 	clientId?: string
 	email?: string
 }
+
+export interface FinancialReport {
+	generatedAt: Date
+	totalIncomes: number
+	totalExpenses: number
+	netBalance: number
+	expensesByCategory: Record<string, number>
+	incomesByCategory: Record<string, number>
+	goalsProgress: Array<{
+		goalId: string
+		targetAmount: number
+		savedAmount: number
+		progressPercent: number
+	}>
+}

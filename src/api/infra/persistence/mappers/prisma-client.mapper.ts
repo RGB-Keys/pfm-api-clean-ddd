@@ -37,6 +37,7 @@ export class PrismaClientMapper {
 				avatarUrl: user.avatarUrl,
 				name: persistence.name,
 				monthlyIncome: new Money(Number(persistence.monthlyIncome)),
+				balance: new Money(Number(persistence.balance)),
 				phoneNumber: persistence.phoneNumber,
 				createdAt: user.createdAt,
 				updatedAt: user.updatedAt ?? undefined,
@@ -102,6 +103,9 @@ export class PrismaClientMapper {
 			monthlyIncome: domainClient.monthlyIncome
 				? new Prisma.Decimal(domainClient.monthlyIncome.value.parsedAmount)
 				: undefined,
+			balance: domainClient.balance
+				? new Prisma.Decimal(domainClient.balance.value.parsedAmount)
+				: undefined,
 			user: {
 				create: {
 					email: domainClient.email,
@@ -119,6 +123,7 @@ export class PrismaClientMapper {
 		const updateData: Prisma.ClientUpdateInput = {
 			name: domainClient.name,
 			phoneNumber: domainClient.phoneNumber ?? undefined,
+			balance: new Prisma.Decimal(domainClient.balance.amount),
 			user: {
 				update: {
 					email: domainClient.email,

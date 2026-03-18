@@ -10,6 +10,10 @@ export class BalanceWorker {
 	constructor(private readonly clientRepository: ClientRepository) {}
 
 	async execute({ clientId }: EventPayloads['balance']) {
+		this.logger.log(
+			`[START] Iniciando atualização de balanço para o cliente: ${clientId}`,
+		)
+
 		const client = await this.clientRepository.findUnique({ clientId })
 
 		if (!client) {
@@ -34,7 +38,16 @@ export class BalanceWorker {
 
 		const newBalance = baseIncome.add(totalIncomes).subtract(totalExpenses)
 
-		client.setMonthlyIncome(newBalance)
+		this.logger.log(
+			`Old balance: ${client.balance.amount}. New balance: ${newBalance.amount}`,
+		)
+
+		client.setBalance(newBalance)
+
+		this.logger.log(
+			`Balance sheet value in the entity before saving: ${client.balance.amount}`,
+		)
+
 		await this.clientRepository.save(client)
 
 		this.logger.log(`Balance updated for client ${clientId}`)

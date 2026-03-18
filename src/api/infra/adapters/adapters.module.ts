@@ -6,6 +6,7 @@ import { ClientAdapter } from './use-cases/client.adapter'
 import { ExpenseAdapter } from './use-cases/expense.adapter'
 import { GoalAdapter } from './use-cases/goal.adapter'
 import { IncomeAdapter } from './use-cases/income.adapter'
+import { ReportAdapter } from './use-cases/report.adapter'
 import { UserAdapter } from './use-cases/user.adapter'
 
 @Module({
@@ -16,6 +17,7 @@ import { UserAdapter } from './use-cases/user.adapter'
 		...IncomeAdapter,
 		...ExpenseAdapter,
 		...GoalAdapter,
+		...ReportAdapter,
 	],
 	exports: [
 		...UserAdapter,
@@ -23,6 +25,7 @@ import { UserAdapter } from './use-cases/user.adapter'
 		...IncomeAdapter,
 		...ExpenseAdapter,
 		...GoalAdapter,
+		...ReportAdapter,
 	],
 })
 export class AdaptersModule {}
