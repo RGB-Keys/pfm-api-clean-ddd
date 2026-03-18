@@ -29,6 +29,7 @@ model Client {
   name          String
   phoneNumber   String?
   monthlyIncome Decimal?
+  balance       Decimal?
   incomes       Income[]
   expenses      Expense[]
   goals         Goal[]
