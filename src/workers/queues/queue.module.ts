@@ -6,6 +6,6 @@ import { SelectionProcessQueue } from './selection-process.service'
 @Module({
 	imports: [forwardRef(() => ApiPersistenceModule)],
 	providers: [SelectionProcessQueue, BalanceWorker],
-	exports: [SelectionProcessQueue],
+	exports: [SelectionProcessQueue, BalanceWorker],
 })
 export class QueueModule {}

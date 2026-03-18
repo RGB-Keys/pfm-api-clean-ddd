@@ -35,7 +35,7 @@ describe('BalanceWorker', () => {
 		expect(findClient).toHaveBeenCalledWith({
 			clientId: client.id.toString(),
 		})
-		expect(client.monthlyIncome.value.parsedAmount).toBe(1400)
+		expect(client.balance.value.parsedAmount).toBe(1400)
 		expect(clientRepository.save).toHaveBeenCalled()
 	})
 
