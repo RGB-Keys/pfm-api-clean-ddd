@@ -1,3 +1,28 @@
+# [1.1.0](https://github.com/RGB-Keys/pfm-api-clean-ddd/compare/v1.0.0...v1.1.0) (2026-03-18)
+
+
+### Bug Fixes
+
+* fix ci-prod.yml ([3f922cf](https://github.com/RGB-Keys/pfm-api-clean-ddd/commit/3f922cfd275cad2d236073d8be3a6d1cccd98935))
+* fix money value object ([592eeef](https://github.com/RGB-Keys/pfm-api-clean-ddd/commit/592eeeff20b6a66b14bedf16199f914e372e6b93))
+
+
+### Features
+
+* add .dockerignore ([bb0693b](https://github.com/RGB-Keys/pfm-api-clean-ddd/commit/bb0693b79d372ec797b65b4a6f39f02c050202a8))
+* add balance in Client Entity ([5162e8c](https://github.com/RGB-Keys/pfm-api-clean-ddd/commit/5162e8ca0f85bd3083b4eedbd336182b641586ee))
+* add balance in prisma client mapper ([97d58f4](https://github.com/RGB-Keys/pfm-api-clean-ddd/commit/97d58f440f6679c4455899509f99e23c338a6bfd))
+* add Financial_Report swagger tag ([fe621ef](https://github.com/RGB-Keys/pfm-api-clean-ddd/commit/fe621ef8471889ec16bb04171c139c806e889795))
+* add Redis_URL and Redis_HOST in env.ts ([41330a2](https://github.com/RGB-Keys/pfm-api-clean-ddd/commit/41330a25b66301d60c903fff90b4c9566a749e82))
+* add ReportAdapter ([bd019c7](https://github.com/RGB-Keys/pfm-api-clean-ddd/commit/bd019c7fcff5f085b81dd0391d32be2b317a11a7))
+* implement balance job ([0c4c505](https://github.com/RGB-Keys/pfm-api-clean-ddd/commit/0c4c5055fc81e18b451a48b85d52ccf4481b73e5))
+* Implement Financial Report Presentation ([2dc44ae](https://github.com/RGB-Keys/pfm-api-clean-ddd/commit/2dc44aeeb1ac4e0082cdb239204f330e48a91817))
+* implement FinancialReportController in Client Module ([abf6a3c](https://github.com/RGB-Keys/pfm-api-clean-ddd/commit/abf6a3ca9fa0d1d740df0e7a97d605b063af5d7c))
+* implement FinancialRerport interface ([3c4cb8c](https://github.com/RGB-Keys/pfm-api-clean-ddd/commit/3c4cb8c2f0a35612daacd111806038fd99d42aa2))
+* implement new services in docker-compose dev ([85abfd2](https://github.com/RGB-Keys/pfm-api-clean-ddd/commit/85abfd2d3eabeb1d3b9a5b8ea84683f12b2da4e0))
+* implement reports financial use case ([186e201](https://github.com/RGB-Keys/pfm-api-clean-ddd/commit/186e201f2169ecae99b0702c76a3490267836d9f))
+* new migration ([78023af](https://github.com/RGB-Keys/pfm-api-clean-ddd/commit/78023afc7dced3f36a6e848591ce1176e5ec79f7))
+
 # 1.0.0 (2026-03-16)
 
 
