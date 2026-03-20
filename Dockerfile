@@ -18,6 +18,8 @@ FROM node:20-alpine3.23
 
 WORKDIR /usr/src/app
 
+RUN apk add --no-cache openssl
+
 ARG APP_NAME
 ENV APP_NAME=${APP_NAME}
 
