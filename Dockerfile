@@ -26,6 +26,7 @@ ENV APP_NAME=${APP_NAME}
 COPY --from=builder /usr/src/app/package.json ./package.json
 COPY --from=builder /usr/src/app/node_modules ./node_modules
 COPY --from=builder /usr/src/app/dist/src/${APP_NAME} ./dist/${APP_NAME}
+COPY --from=builder /usr/src/app/prisma ./prisma
 
 COPY package*.json ./
 RUN npm install --production
