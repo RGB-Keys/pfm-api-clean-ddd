@@ -5,4 +5,5 @@ export const SWAGGER_TAGS = {
 	INCOME: 'Income',
 	FINANCIAL_REPORT: 'Financial Report',
 	USER: 'User',
+	HEALTH: 'Health',
 } as const

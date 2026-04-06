@@ -8,6 +8,7 @@ export const envSchema = z.object({
 	OFFSET_LIMIT: z.coerce.number().default(20),
 	REDIS_URL: z.string(),
 	REDIS_HOST: z.string(),
+	REDIS_DOCKER_HOST: z.string(),
 	REDIS_PORT: z.coerce.number().optional().default(6379),
 	REDIS_USER_NAME: z.string().optional(),
 	REDIS_DB: z.coerce.number().optional().default(0),
