@@ -35,13 +35,16 @@ export class HealthController {
 	@Get('readiness')
 	@HealthCheck()
 	checkReadiness() {
+		console.log('[Health] K8s REDIS_HOST:', this.envService.get('REDIS_HOST'))
+		console.log('[Health] K8s REDIS_URL:', this.envService.get('REDIS_URL'))
+
 		return this.health.check([
 			() => this.db.pingCheck('database', this.prisma.getClient()),
 			() =>
 				this.microservice.pingCheck<RedisOptions>('redis', {
 					transport: Transport.REDIS,
 					options: {
-						host: this.envService.get('REDIS_DOCKER_HOST') || 'localhost',
+						host: this.envService.get('REDIS_HOST') || 'localhost',
 						port: this.envService.get('REDIS_PORT') || 6379,
 						password: this.envService.get('REDIS_PASSWORD') || undefined,
 					},
